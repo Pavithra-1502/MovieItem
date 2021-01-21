@@ -1,18 +1,19 @@
 
-import './App.css';
 
-import React,{useState} from 'react';
+import './App.css';
+import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { Form, } from "react-bootstrap";
+import * as ReactBootstrap from 'react-bootstrap';
+
 function App() {
 
-  const [loading, setLoading] = React.useState(true);
+  const [loading, setLoading] = React.useState(false);
   const [items, setTitle] = React.useState([]);
   const [releaseItem, setReleaseDate] = React.useState([]);
   const [value,setValue]=useState('');
-
   var    arr = [];
 
   React.useEffect(() => {
@@ -22,26 +23,26 @@ function App() {
       const apiUrl = 'https://swapi.dev/api/films/';
       const response = await fetch(apiUrl);
       const body = await response.json();
-
-    
         Object.keys(body).forEach(key => arr.push({name: key, value: body[key]}))
         setValue(arr[3].value);
- 
+        console.log(arr[3]);
       if (!unmounted) {
         setTitle(
           body.results.map(({ title })=>({ label: title, value: title}))
         );
-        setLoading(false);
-      }
+      }    
     }
     getAPI();
     return () => {
       unmounted = true;
+      
     };
+
   }, []);
 
   const handleSelect=(e)=>{
-    var data = value.filter(item => item.title === e)[0].release_date;
+    var data = value.filter(item => item.title === e)[0].release_date.slice(0,4);
+    console.log(data);
     setReleaseDate(e + '-' + data);
   }
  
@@ -49,9 +50,9 @@ function App() {
     <div className="App container">
       <div className="character-heading bold-class align-center">Movies List</div>
       <div className="character-heading">Character</div>
+     <div> { value ? loading  : <ReactBootstrap.Spinner animation="border" />}</div>
       <DropdownButton
       alignRight
-      disabled={loading}
       title="Select"
       id="dropdown-menu-align-right"
       onSelect={handleSelect}
@@ -70,3 +71,4 @@ function App() {
   );
 }
 export default App;
+
