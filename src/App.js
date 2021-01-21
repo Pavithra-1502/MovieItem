@@ -25,7 +25,6 @@ function App() {
       const body = await response.json();
         Object.keys(body).forEach(key => arr.push({name: key, value: body[key]}))
         setValue(arr[3].value);
-        console.log(arr[3]);
       if (!unmounted) {
         setTitle(
           body.results.map(({ title })=>({ label: title, value: title}))
@@ -42,7 +41,6 @@ function App() {
 
   const handleSelect=(e)=>{
     var data = value.filter(item => item.title === e)[0].release_date.slice(0,4);
-    console.log(data);
     setReleaseDate(e + '-' + data);
   }
  
